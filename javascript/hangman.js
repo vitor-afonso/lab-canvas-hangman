@@ -27,34 +27,38 @@ class Hangman {
 
   checkClickedLetters(letter) {
     // ... your code goes here
-    for(let value of this.letters){
-      if (letter === value){
-        return false;
-      } else {
-        return true;
-      }
+    if (this.letters.indexOf(letter) != -1){
+      return true;
+    } else {
+      return false;
     }
 
   }
 
   addCorrectLetter(letter) {
     // ... your code goes here
-
+    
     for(let i = 0; i < this.secretWord.length; i++){
+      
       if (this.secretWord.charAt(i) === letter ) {
-        this.guessedLetters[i] = letter;
+        let a = this.guessedLetters.slice(0, i);
+        let b = this.guessedLetters.slice(i);
+        // find a way to sort the letters
+        this.guessedLetters = a + letter +b; 
       }
-    }    
+      
+    }
+
     this.checkWinner();
+    this.letters.push(letter);
   }
 
   addWrongLetter(letter) {
     // ... your code goes here
     this.errorsLeft--;
     this.checkGameOver();
-    if(this.letters.indexOf(letter) === -1){
-      this.letters.push(letter);
-    }
+    this.letters.push(letter);
+    
 
   }
 
@@ -90,26 +94,33 @@ if (startGameButton) {
     hangmanCanvas = new HangmanCanvas(hangman.secretWord);
 
     // ... your code goes here
+    hangmanCanvas.createBoard();
   });
 }
 
-document.addEventListener('keyup', event => {
+document.addEventListener('keydown', event => {
 
-  if(checkIfLetter(event)) {
+  if(hangman.checkIfLetter(event)) {
 
     let keyStr = event.key;
 
-    if(!hangman.checkClickedLetters(keyStr)){
+    if(hangman.checkClickedLetters(keyStr) === false){
 
       if (hangman.secretWord.indexOf(keyStr) != -1){
 
         hangman.addCorrectLetter(keyStr);
-        hangman.writeCorrectLetter(keyStr);
+
+        for(let i = 0; hangman.secretWord.length; i++){
+          if (keyStr == hangman.secretWord[i]){
+            hangmanCanvas.writeCorrectLetter(i);
+          }
+        }
+        
 
       } else {
 
-        hangman.addWrongLetter(hangman.secretWord.charAt(keyStr));
-        hangman.writeWrongLetter(keyStr, hangman.errorsLeft);
+        hangman.addWrongLetter(keyStr);
+        hangmanCanvas.writeWrongLetter(keyStr, hangman.errorsLeft);
         // Add action that draws the next part of the hangman on the screen using errorsLeft
       }
 

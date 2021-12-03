@@ -10,7 +10,7 @@ class HangmanCanvas {
   createBoard() {
     // ... your code goes here
     this.context.clearRect(1200, 800, 1200, 800);
-    drawLines();
+    this.drawLines();
   }
 
   drawLines() {
@@ -18,7 +18,7 @@ class HangmanCanvas {
     // ... your code goes here
     let x = 350;
     
-    for (let i = 0; i < secretWord.length; i++) {
+    for (let i = 0; i < this.secretWord.length; i++) {
     
       this.context.beginPath();
       this.context.moveTo(x,700);
@@ -33,31 +33,33 @@ class HangmanCanvas {
   }
 
   writeCorrectLetter(index) {
-
+    
     // ... your code goes here
     let letter = this.secretWord[index];
-
-    if (index == 0) {
-      this.context.font = '48px sans-serif';
-      this.context.fillText(letter, 365, 690);
-    } else {
-      index = index * 100 + 10;  
-      this.context.font = '48px sans-serif';
-      this.context.fillText(letter, 365 + index, 690);
-    }
+    console.log('letter to be impressed =>',letter);
+    
+    // To Find the Bug
+    // if (index == 0) {
+    //   this.context.font = '48px sans-serif';
+    //   this.context.fillText(letter, 365, 690);
+    // } else {
+    //   index = index * 100 + 10;  
+    //   this.context.font = '48px sans-serif';
+    //   this.context.fillText(letter, 365 + index, 690);
+    // }
   
   }
 
   writeWrongLetter(letter, errorsLeft) {
     // ... your code goes here
     let xOfLetters;
-    if (this.letters.length == 1) {
+    if (hangman.letters.length == 1) {
       this.context.font = '48px sans-serif';
-      this.context.fillText(letra, 700, 200);
+      this.context.fillText(letter, 700, 200);
     } else {
       
-      for (let i = 0; i < this.letters.length; i++){
-        if(letter === this.letters[i])
+      for (let i = 0; i < hangman.letters.length; i++){
+        if(letter === hangman.letters[i])
           xOfLetters = i * 50 + 10;  
           this.context.font = '48px sans-serif';
           this.context.fillText(letter, 700 + xOfLetters, 200);
